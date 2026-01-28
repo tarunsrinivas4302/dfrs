@@ -1,0 +1,98 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "DFRS HTTP Event",
+    "description": "Canonical event schema for captured HTTP request/response pairs in DFRS",
+    "type": "object",
+    "required": [
+        "event_id",
+        "trace_id",
+        "service",
+        "timestamp",
+        "duration_ms",
+        "request",
+        "response"
+    ],
+    "properties": {
+        "event_id": {
+            "type": "string",
+            "description": "Unique identifier for this event"
+        },
+        "trace_id": {
+            "type": "string",
+            "description": "Correlation ID shared across services for a single request flow"
+        },
+        "service": {
+            "type": "string",
+            "description": "Logical name of the service emitting the event"
+        },
+        "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time when the request completed"
+        },
+        "duration_ms": {
+            "type": "number",
+            "description": "Total request duration in milliseconds"
+        },
+        "request": {
+            "type": "object",
+            "required": [
+                "method",
+                "path"
+            ],
+            "properties": {
+                "method": {
+                    "type": "string",
+                    "description": "HTTP method (GET, POST, etc.)"
+                },
+                "path": {
+                    "type": "string",
+                    "description": "Request path without host"
+                },
+                "headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Optional HTTP request headers"
+                },
+                "body": {
+                    "type": "string",
+                    "description": "Optional request body (raw, possibly truncated)"
+                }
+            }
+        },
+        "response": {
+            "type": "object",
+            "required": [
+                "status_code"
+            ],
+            "properties": {
+                "status_code": {
+                    "type": "number",
+                    "description": "HTTP response status code"
+                },
+                "headers": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Optional HTTP response headers"
+                },
+                "body": {
+                    "type": "string",
+                    "description": "Optional response body (raw, possibly truncated)"
+                }
+            }
+        },
+        "error": {
+            "type": "object",
+            "description": "Optional error information if request failed",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
